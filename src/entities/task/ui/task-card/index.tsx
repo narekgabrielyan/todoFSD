@@ -13,7 +13,6 @@ export const TaskCard = ({ data, titleHref, children, ...cardProps }: TaskCardPr
 
     return (
         <Card
-            // Можно обработать и получше при желании
             title={`Task#${cardProps.loading ? "" : data?.id}`}
             className={styles.root}
             {...cardProps}

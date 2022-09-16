@@ -15,7 +15,6 @@ export const TaskRow = ({ data, before, titleHref }: TaskRowProps) => {
     const rowCn = cn(styles.root, { [styles.completed]: data.completed });
 
     return (
-        // Можно смело использовать classnames и аналоги
         <Row className={rowCn}>
             {before}
             {title}
