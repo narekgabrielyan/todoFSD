@@ -8,7 +8,7 @@ import { reflect } from "@effector/reflect";
 import { ToggleTask } from "features/toggle-task";
 import { TaskCard, taskModel } from "entities/task";
 import styles from "./styles.module.scss";
-
+// @ts-ignore
 type Props = RouteChildrenProps<{ taskId: string }> & { isLoading: boolean };
 
 const View = ({ match, isLoading }: Props) => {

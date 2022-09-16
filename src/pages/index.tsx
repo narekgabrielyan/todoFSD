@@ -1,15 +1,15 @@
 import { lazy } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 
 const TasksListPage = lazy(() => import("./tasks-list"));
 const TaskDetailsPage = lazy(() => import("./task-details"));
 
 export const Routing = () => {
     return (
-        <Switch>
-            <Route exact path="/" component={TasksListPage} />
-            <Route exact path="/:taskId" component={TaskDetailsPage} />
-            <Redirect to="/" />
-        </Switch>
+        <Routes>
+            <Route path="/" element={<TasksListPage/>} />
+            <Route path="/:taskId" element={<TaskDetailsPage/>} />
+            <Navigate to="/" />
+        </Routes>
     );
 };
