@@ -1,26 +1,27 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import RouteChildrenProps from "react-router";
-
 import { Layout, Result, Button } from "antd";
 import { reflect } from "@effector/reflect";
 
 import { ToggleTask } from "features/toggle-task";
 import { TaskCard, taskModel } from "entities/task";
 import styles from "./styles.module.scss";
-// @ts-ignore
-type Props = RouteChildrenProps<{ taskId: string }> & { isLoading: boolean };
+import { useParams } from "react-router";
 
-const View = ({ match, isLoading }: Props) => {
-    const taskId = Number(match?.params.taskId);
+type RouteProps = {
+    taskId: string;
+};
+
+const View = () => {
+    const params = useParams<RouteProps>()
+    const taskId = Number(params?.taskId);
     const task = taskModel.selectors.useTask(taskId);
 
     useEffect(() => {
         taskModel.effects.getTaskByIdFx({ taskId });
     }, [taskId]);
 
-    // Можно часть логики перенести в entity/task/card (как контейнер)
-    if (!task && !isLoading) {
+    if (!task) {
         return (
             <Result
                 status="404"
@@ -37,7 +38,6 @@ const View = ({ match, isLoading }: Props) => {
                 <TaskCard
                     data={task}
                     size="default"
-                    loading={isLoading}
                     className={styles.card}
                     bodyStyle={{ height: 400 }}
                     extra={<Link to="/">Back to TasksList</Link>}
@@ -50,11 +50,9 @@ const View = ({ match, isLoading }: Props) => {
     )
 };
 
-// Использование effector-reflect здесь опционально и некритично в рамках методологии
 const TaskDetailsPage = reflect({
     view: View,
     bind: {
-        isLoading: taskModel.$taskDetailsLoading,
     }
 });
 
