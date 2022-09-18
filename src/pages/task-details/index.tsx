@@ -12,7 +12,11 @@ type RouteProps = {
     taskId: string;
 };
 
-const View = () => {
+type LoadingProps = {
+    isLoading: boolean;
+}
+
+const View = ({isLoading}: LoadingProps) => {
     const params = useParams<RouteProps>()
     const taskId = Number(params?.taskId);
     const task = taskModel.selectors.useTask(taskId);
@@ -21,7 +25,7 @@ const View = () => {
         taskModel.effects.getTaskByIdFx({ taskId });
     }, [taskId]);
 
-    if (!task) {
+    if (!task && !isLoading) {
         return (
             <Result
                 status="404"
@@ -40,6 +44,7 @@ const View = () => {
                     size="default"
                     className={styles.card}
                     bodyStyle={{ height: 400 }}
+                    loading={isLoading}
                     extra={<Link to="/">Back to TasksList</Link>}
                     actions={[
                         <ToggleTask key="toggle" taskId={taskId} />
@@ -53,6 +58,7 @@ const View = () => {
 const TaskDetailsPage = reflect({
     view: View,
     bind: {
+        isLoading: taskModel.$taskDetailsLoading,
     }
 });
 
